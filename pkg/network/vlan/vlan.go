@@ -101,18 +101,6 @@ func (v *Vlan) Teardown() error {
 	return nil
 }
 
-func (v *Vlan) AddLocalArea(la *utils.LocalArea) error {
-	if v.uplink == nil {
-		return fmt.Errorf("bridge %s hasn't attached an uplink", v.bridge.Name)
-	}
-
-	if err := v.uplink.AddBridgeVlan(la.Vid); err != nil {
-		return fmt.Errorf("add bridge vlanconfig %d failed, error: %w", la.Vid, err)
-	}
-
-	return nil
-}
-
 func (v *Vlan) AddLocalAreas(las []utils.LocalArea) error {
 	if len(las) == 0 {
 		return nil
@@ -125,18 +113,6 @@ func (v *Vlan) AddLocalAreas(las []utils.LocalArea) error {
 			return fmt.Errorf("add bridge vlanconfig %d failed, error: %w", la.Vid, err)
 		}
 	}
-	return nil
-}
-
-func (v *Vlan) RemoveLocalArea(la *utils.LocalArea) error {
-	if v.uplink == nil {
-		return fmt.Errorf("bridge %s hasn't attached with an uplink", v.bridge.Name)
-	}
-
-	if err := v.uplink.DelBridgeVlan(la.Vid); err != nil {
-		return fmt.Errorf("remove bridge vlanconfig %d failed, error: %w", la.Vid, err)
-	}
-
 	return nil
 }
 
